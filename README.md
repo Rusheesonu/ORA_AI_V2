@@ -35,18 +35,13 @@ To get started with this project:
    ```bash
     npm install
 
-Usage
-  After setting up the project, you can build and run the filtering system.
-
-Build the Project
-  To compile the TypeScript code into JavaScript:
+Usage:
+After setting up the project, you can build and run the filtering system/
+   
+Build the Project:
    ```bash
       npm run build
-
-Run the Tests
-  To execute the test suite:
-   ```bash
-     npm test
+      npm test
 
 The test cases validate the filtering logic using various inputs, including edge cases.
 
