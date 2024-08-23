@@ -1,11 +1,18 @@
 import { ContentFilter, RegexFilterStrategy } from '../src/filter';
+import * as fs from 'fs';
 
 describe('ContentFilter', () => {
     let bitlyFilter: ContentFilter;
+    let testResults: any[] = [];
+
+    beforeAll(() => {
+        // Clear the file at the start of the test suite
+        fs.writeFileSync('filter-results.json', '', 'utf8');
+    });
 
     beforeEach(() => {
         // Define the regex patterns for the test
-        const patterns = [ /bitly\.com/i, /bit\.ly/i, /bitly/i ];
+        const patterns = [/bitly\.com/i, /bit\.ly/i, /bitly/i];
         const regexStrategy = new RegexFilterStrategy(patterns);
         bitlyFilter = new ContentFilter(regexStrategy);
     });
@@ -31,12 +38,28 @@ describe('ContentFilter', () => {
 
     testCases.forEach(({ text, expected }, index) => {
         test(`Test case ${index + 1}: ${expected ? 'should' : 'should not'} find mentions`, () => {
-            expect(bitlyFilter.filterText(text)).toBe(expected);
+            const result = bitlyFilter.filterText(text);
+            const testCaseResult = {
+                testCase: index + 1,
+                text,
+                foundMentions: result,
+                expected,
+            };
+
+            // Store the result in the array
+            testResults.push(testCaseResult);
+
+            expect(result).toBe(expected);
         });
     });
 
     test('should handle empty strings and invalid inputs', () => {
-        expect(() => bitlyFilter.filterText('')).not.toThrowError(); // Modify to match your handling logic
-        expect(() => bitlyFilter.filterText(null as unknown as string)).toThrowError(); // Assuming null is invalid
+        expect(() => bitlyFilter.filterText('')).not.toThrowError();
+        expect(() => bitlyFilter.filterText(null as unknown as string)).toThrowError();
+    });
+
+    afterAll(() => {
+        // After all tests, write the results to the JSON file
+        fs.writeFileSync('filter-results.json', JSON.stringify(testResults, null, 4), 'utf8');
     });
 });
