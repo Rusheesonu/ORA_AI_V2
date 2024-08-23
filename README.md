@@ -94,7 +94,14 @@ Shortened or complex URLs might bypass detection since the system strips URLs be
 
 ## Future Improvements
 
-Extended Filtering Strategies: Implement additional filtering strategies (e.g., keyword-based, AI-based) for greater flexibility.
-Performance Optimization: Add optimizations for large datasets, possibly through distributed processing or other scaling techniques.
-Dynamic Pattern Loading: Allow patterns to be loaded dynamically from external sources such as APIs or databases.
-Configurable Normalization: Make text normalization configurable, enabling or disabling steps like URL removal based on user needs.
+- Extended Filtering Strategies: 
+   Implement additional filtering strategies (e.g., keyword-based, AI-based) for greater flexibility.
+
+- Performance Optimization: 
+   Add optimizations for large datasets, possibly through distributed processing or other scaling techniques.
+  
+- Dynamic Pattern Loading: 
+   Allow patterns to be loaded dynamically from external sources such as APIs or databases.
+  
+- Configurable Normalization: 
+   Make text normalization configurable, enabling or disabling steps like URL removal based on user needs.
