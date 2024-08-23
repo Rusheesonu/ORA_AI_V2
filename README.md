@@ -35,17 +35,22 @@ To get started with this project:
    ```bash
     npm install
 
-Usage:
-After setting up the project, you can build and run the filtering system/
-   
-Build the Project:
-   ```bash
+## Usage
+
+After setting up the project, you can build and run the filtering system.
+
+### Build the Project
+
+   To compile the TypeScript code into JavaScript:
+      ```bash
       npm run build
+
+   Run the Tests:
+   To execute the test suite:
+      ```bash
       npm test
 
-The test cases validate the filtering logic using various inputs, including edge cases.
-
-## Filtering Approach
+### Filtering Approach
 
 The filtering system uses a Strategy Pattern, which decouples the filtering logic from specific implementations. Here's how it works:
 
@@ -66,6 +71,7 @@ Input: 'Visit bitly.com for details.'
 Output: true (Detected bitly.com)
 
 Negative Matches:
+
 Input: 'This is a test.'
 
 Output: false (No mention of bitly)
@@ -87,6 +93,7 @@ The filter may struggle with very large datasets unless optimized for performanc
 Shortened or complex URLs might bypass detection since the system strips URLs before filtering.
 
 ## Future Improvements
+
 Extended Filtering Strategies: Implement additional filtering strategies (e.g., keyword-based, AI-based) for greater flexibility.
 Performance Optimization: Add optimizations for large datasets, possibly through distributed processing or other scaling techniques.
 Dynamic Pattern Loading: Allow patterns to be loaded dynamically from external sources such as APIs or databases.
