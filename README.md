@@ -36,8 +36,8 @@ To get started with this project:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/content-filter.git
-   cd content-filter
+   git clone https://github.com/Rusheesonu/ORA_AI_V2
+   cd ORA_AI_V2
    ```
 
 
@@ -45,10 +45,9 @@ To get started with this project:
 
    ```
    npm install
-   Build the project:
    ```
 
-3. Build the Projext
+3. Build the Project
 
    ```
    npm run build
