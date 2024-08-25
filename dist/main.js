@@ -1,25 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// src/main.ts
 const filter_1 = require("./filter");
-// Define patterns for "Bitly"
-const bitlyPatterns = [
-    /bitly\.com/i,
-    /bit\.ly/i,
-    /bitly/i
-];
-// Create a filter instance for "Bitly"
-const bitlyFilter = new filter_1.ContentFilter(bitlyPatterns);
-// Sample texts
-const samples = [
-    'I had a problem with bit.ly link and Bitly service was not helpful.',
-    'Check out this new feature at bit.ly/xyz',
-    'Here’s a link to bitly.com for you.',
-    'Bit.ly links are great!',
-    'The service is very good.'
-];
-// Test the filter
-samples.forEach(text => {
-    console.log(`Text: "${text}"`);
-    console.log(`Relevant mention found: ${bitlyFilter.filterText(text)}`);
-});
+// Define the regex patterns for Bitly
+const bitlyPatterns = [/bitly\.com/i, /bit\.ly/i, /bitly/i];
+// Create a RegexFilterStrategy with the patterns
+const regexStrategy = new filter_1.RegexFilterStrategy(bitlyPatterns);
+// Instantiate the ContentFilter with the strategy
+const bitlyFilter = new filter_1.ContentFilter(regexStrategy);
+// Test the filter on some sample text
+const testText = 'Check out this link: bit.ly/abc123';
+const isMatch = bitlyFilter.filterText(testText);
+console.log(isMatch); // Outputs: true or false based on the filtering
