@@ -1,0 +1,15 @@
+[
+    { "text": "Check out bit.ly for more info!", "expected": true },
+    { "text": "Visit bitly.com for details!", "expected": true },
+    { "text": "This is a test for Bitly.", "expected": true },
+    { "text": "The link is https://bit.ly/abc123", "expected": false },
+    { "text": "Another example: bit.ly", "expected": true },
+    { "text": "Random text without match", "expected": false },
+    { "text": "bitly", "expected": true },
+    { "text": "bit.ly link in text", "expected": true },
+    { "text": "The URL was bit.ly/abc", "expected": false },
+    { "text": "bitlycom", "expected": false },
+    { "text": "Check bit.ly and bitly.com", "expected": true },
+    { "text": "No relevant content here", "expected": false },
+    { "text": "Bitly.com", "expected": true }
+]
