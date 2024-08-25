@@ -1,95 +1,83 @@
-/**
- * Interface for a text filtering strategy.
- */
+import natural from 'natural';
+
+// Define the interface for a filtering strategy
 export interface FilterStrategy {
     filter(text: string): boolean;
 }
 
-/**
- * Text filtering strategy based on regular expressions.
- */
-export class RegexFilterStrategy implements FilterStrategy {
-    private patterns: RegExp[];
+// Define the Regex, Keyword, and NLP strategy
+export class RegexKeywordNLPFilterStrategy implements FilterStrategy {
+    private regexPatterns: RegExp[];
+    private keywords: string[];
+    private stemmer: typeof natural.PorterStemmer;
 
-    /**
-     * Creates an instance of RegexFilterStrategy.
-     * @param patterns Array of RegExp patterns to match.
-     */
-    constructor(patterns: RegExp[]) {
-        if (!Array.isArray(patterns)) {
-            throw new TypeError('Patterns should be an array of RegExp objects.');
-        }
+    constructor(regexPatterns: RegExp[], keywords: string[]) {
+        this.regexPatterns = regexPatterns;
+        this.keywords = keywords.map(keyword => keyword.toLowerCase());
+        this.stemmer = natural.PorterStemmer; // Ensure the correct stemmer is used
+    }
 
-        this.patterns = patterns.map(pattern => {
-            if (!(pattern instanceof RegExp)) {
-                throw new TypeError('Each pattern must be an instance of RegExp.');
+    private normalizeText(text: string): string {
+        // Remove URLs
+        let normalizedText = text.replace(/https?:\/\/\S+/g, '');
+    
+        // Replace non-alphanumeric characters (excluding dots and slashes) with spaces
+        normalizedText = normalizedText.replace(/[^a-zA-Z0-9./ ]/g, ' ');
+    
+        // Replace multiple spaces with a single space
+        normalizedText = normalizedText.replace(/\s+/g, ' ');
+    
+        // Remove trailing dots
+        normalizedText = normalizedText.replace(/\.$/, '');
+    
+        return normalizedText.toLowerCase().trim();
+    }
+    
+
+    private applyRegex(text: string): boolean {
+        console.log('Applying regex to:', text); // Debug
+        return this.regexPatterns.some(pattern => pattern.test(text));
+    }
+
+    private keywordMatching(text: string): boolean {
+        const words = text.split(/\s+/).map(word => this.stemmer.stem(word));
+        console.log('Keywords:', this.keywords); // Debug
+        console.log('Words:', words); // Debug
+        return this.keywords.some(keyword => words.includes(this.stemmer.stem(keyword)));
+    }
+
+    private nlpProcessing(text: string): boolean {
+        // Use NLP processing to further refine matches
+        // Implement any additional NLP logic if needed
+        console.log('NLP processing for:', text); // Debug
+        return true;
+    }
+
+    filter(text: string): boolean {
+        const normalizedText = this.normalizeText(text);
+        console.log('Normalized text:', normalizedText); // Debug
+
+        // First level: Regex Filtering
+        if (this.applyRegex(normalizedText)) {
+            // Second level: Keyword Matching
+            if (this.keywordMatching(normalizedText)) {
+                // Third level: NLP Processing
+                return this.nlpProcessing(normalizedText);
             }
-            return pattern;
-        });
-    }
-
-    /**
-     * Filters text based on patterns.
-     * @param text The text to be filtered.
-     * @returns true if any pattern matches the text, false otherwise.
-     */
-    public filter(text: string): boolean {
-        if (typeof text !== 'string') {
-            throw new TypeError('The input must be a string.');
         }
-
-        // Handle empty strings and invalid inputs
-        if (text.trim() === '') {
-            return false;
-        }
-
-        // Clean and normalize text
-        const cleanedText = this.cleanText(text);
-        return this.patterns.some(pattern => pattern.test(cleanedText));
-    }
-
-    /**
-     * Cleans and normalizes text to improve pattern matching.
-     * @param text The text to be cleaned.
-     * @returns The cleaned text.
-     */
-    private cleanText(text: string): string {
-        return text
-            .trim()                      // Remove leading and trailing whitespace
-            .toLowerCase()               // Normalize to lowercase for case-insensitive matching
-            .replace(/https?:\/\/\S+/gi, '') // Remove URLs
-            .replace(/[^\w\s]/g, '');    // Remove punctuation and special characters
+        return false;
     }
 }
 
-/**
- * Class to handle content filtering based on a specific filter strategy.
- */
+// Define the ContentFilter class that uses the filtering strategy
 export class ContentFilter {
     private strategy: FilterStrategy;
 
-    /**
-     * Creates an instance of ContentFilter.
-     * @param strategy The filter strategy to use.
-     */
     constructor(strategy: FilterStrategy) {
         this.strategy = strategy;
     }
 
-    /**
-     * Filters text based on the filter strategy.
-     * @param text The text to be filtered.
-     * @returns true if the strategy matches the text, false otherwise.
-     */
-    public filterText(text: string): boolean {
+    filterText(text: string): boolean {
         return this.strategy.filter(text);
-    }
-
-    /**
-     * Updates the filter strategy.
-     * @param strategy The new filter strategy to use.
-     */
-    public updateStrategy(strategy: FilterStrategy): void {
-        this.strategy = strategy;
     }
 }
