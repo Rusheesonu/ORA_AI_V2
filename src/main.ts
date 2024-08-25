@@ -1,15 +1,14 @@
-import { ContentFilter, RegexFilterStrategy } from './filter';
+import { ContentFilter, RegexKeywordNLPFilterStrategy } from './filter';
 
-// Define the regex patterns for Bitly
-const bitlyPatterns = [ /bitly\.com/i, /bit\.ly/i, /bitly/i ];
+// Use the imported classes as needed
+const regexPatterns = [
+    /bitly\.com/i,
+    /bit\.ly/i,
+    /bitly/i,
+];
+const keywords = ['bitly', 'bit.ly', 'bitly.com'];
 
-// Create a RegexFilterStrategy with the patterns
-const regexStrategy = new RegexFilterStrategy(bitlyPatterns);
+const bitlyFilter = new ContentFilter(new RegexKeywordNLPFilterStrategy(regexPatterns, keywords));
 
-// Instantiate the ContentFilter with the strategy
-const bitlyFilter = new ContentFilter(regexStrategy);
-
-// Test the filter on some sample text
-const testText = 'Check out this link: bit.ly/abc123';
-const isMatch = bitlyFilter.filterText(testText);
-console.log(isMatch); // Outputs: true or false based on the filtering
+const text = "Check out bit.ly for more info!";
+console.log(bitlyFilter.filterText(text)); // Example usage
