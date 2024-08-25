@@ -83,17 +83,63 @@ Test Cases: Place your test cases in a file named test-cases.json in the tests d
   { "text": "Visit bitly.com for details!", "expected": true }
 ]
 ```
-### Fltering Approach
+### Filtering Approach
 
-The filtering system uses a Strategy Pattern, which decouples the filtering logic from specific implementations. Here's how it works:
+The content filtering system leverages the Strategy Pattern to provide a flexible and modular approach to filtering. This design pattern allows for the separation of the filtering logic from the specific implementations, enabling easy adjustments and expansions. Below is a detailed explanation of each step in the filtering process:
 
-Normalization: The input text is cleaned by removing punctuation, URLs, and converting the text to lowercase for case-insensitive matching.
+Filtering Steps
 
-Pattern Matching: The RegexKeywordNLPFilterStrategy is used to detect patterns defined via regular expressions.
+1. Normalization
 
-Keyword Matching: Keywords are matched after normalization and stemming.
+Objective: Clean and standardize the input text to ensure consistent processing and accurate matching.
 
-NLP Processing: Provides an additional layer of filtering using NLP techniques.
+Steps:
+
+Remove URLs: All URLs are preserved as-is and not stripped away, ensuring that links like bit.ly remain intact for regex matching.
+
+Remove Punctuation: Non-alphanumeric characters, except for dots and slashes, are replaced with spaces. This prevents the interference of punctuation marks with keyword matching.
+
+Normalize Whitespace: Multiple spaces are consolidated into a single space to avoid issues caused by irregular spacing.
+
+Convert to Lowercase: The entire text is converted to lowercase to ensure case-insensitive matching. This helps in finding keywords and patterns regardless of their case.
+
+2. Pattern Matching
+
+Objective: Identify specific patterns in the text using predefined regular expressions.
+
+Steps:
+
+Define Patterns: Regular expressions are defined to capture various patterns of interest, such as specific URLs or other key patterns relevant to the content filtering needs.
+
+Apply Regex Patterns: Each regex pattern is applied to the normalized text to check for matches. This allows for the detection of specific formats or strings within the content.
+
+3. Keyword Matching
+
+Objective: Detect important keywords within the text after normalization and stemming.
+
+Steps:
+
+Tokenize Text: The normalized text is split into individual words based on whitespace.
+
+Stem Words: Each word is processed using a stemming algorithm to reduce it to its root form, which helps in matching variations of the same keyword (e.g., "bit.ly" and "bitly").
+
+Match Keywords: The list of keywords, also stemmed, is checked against the stemmed words from the text. This ensures that relevant keywords are detected even if they appear in different forms or with slight variations.
+
+4. NLP Processing
+
+Objective: Utilize Natural Language Processing (NLP) techniques to enhance the filtering accuracy.
+
+Steps:
+
+Implement NLP Techniques: Additional NLP methods are applied to refine the results, such as checking for specific entities or patterns that are not captured by regex or keyword matching alone.
+
+Custom NLP Logic: Depending on the requirements, custom NLP logic can be added to handle more complex scenarios, such as sentiment analysis or entity recognition.
+
+Ensure Comprehensive Filtering: This step provides an extra layer of filtering to ensure that all relevant content is captured, even if it doesn’t fit perfectly into the predefined regex or keyword patterns.
+
+Conclusion
+
+By combining these steps—Normalization, Pattern Matching, Keyword Matching, and NLP Processing—the filtering system provides a robust solution for detecting and handling relevant content. This approach ensures that the system is both flexible and accurate, allowing for adjustments and improvements as needed.
 
 ### Examples
 
